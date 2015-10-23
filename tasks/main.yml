@@ -1,0 +1,55 @@
+# tasks file for nagios-client
+---
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+  with_items: nagios_client_dependencies
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-dependencies
+
+- name: install additional
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: nagios_client_install
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-install
+
+- name: add group
+  group:
+    name: "{{ item }}"
+  with_flattened:
+    - nagios_client_group
+    - nagios_client_groups
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-add-group
+
+- name: add user
+  user:
+    name: "{{ nagios_client_user }}"
+    group: "{{ nagios_client_group }}"
+    groups: "{{ nagios_client_groups | join(',') }}"
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-add-user
+
+- name: create authorized_keys from public key
+  authorized_key:
+    user: "{{ nagios_client_user }}"
+    key: "{{ lookup('file', item.src) }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: nagios_client_authorized_keys
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-authorized-keys

@@ -1,0 +1,7 @@
+# defaults file for nagios-client
+---
+nagios_client_install: []
+
+nagios_client_user: nagios
+nagios_client_group: nagios
+nagios_client_groups: []
