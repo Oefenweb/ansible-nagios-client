@@ -4,6 +4,6 @@
   remote_user: root
   roles:
     - ../../
-	vars:
+  vars:
     nagios_client_authorized_keys:
       - src: id_rsa.pub
