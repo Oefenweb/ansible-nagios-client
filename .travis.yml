@@ -1,0 +1,76 @@
+---
+language: python
+python: "2.7"
+
+env:
+  - ANSIBLE_VERSION=latest
+  - ANSIBLE_VERSION=1.9.4
+  - ANSIBLE_VERSION=1.9.3
+  - ANSIBLE_VERSION=1.9.2
+  - ANSIBLE_VERSION=1.9.1
+  - ANSIBLE_VERSION=1.9.0.1
+  - ANSIBLE_VERSION=1.8.4
+  - ANSIBLE_VERSION=1.8.3
+  - ANSIBLE_VERSION=1.8.2
+  - ANSIBLE_VERSION=1.8.1
+  - ANSIBLE_VERSION=1.8
+  - ANSIBLE_VERSION=1.7.2
+  - ANSIBLE_VERSION=1.7.1
+  - ANSIBLE_VERSION=1.7
+  - ANSIBLE_VERSION=1.6.9
+  - ANSIBLE_VERSION=1.6.8
+  - ANSIBLE_VERSION=1.6.7
+  - ANSIBLE_VERSION=1.6.6
+  - ANSIBLE_VERSION=1.6.5
+  - ANSIBLE_VERSION=1.6.4
+  - ANSIBLE_VERSION=1.6.3
+  - ANSIBLE_VERSION=1.6.2
+  - ANSIBLE_VERSION=1.6.10
+  - ANSIBLE_VERSION=1.6.1
+  - ANSIBLE_VERSION=1.6
+  - ANSIBLE_VERSION=1.5.5
+  - ANSIBLE_VERSION=1.5.4
+  - ANSIBLE_VERSION=1.5.3
+  - ANSIBLE_VERSION=1.5.2
+  - ANSIBLE_VERSION=1.5.1
+  - ANSIBLE_VERSION=1.5
+  - ANSIBLE_VERSION=1.4.5
+  - ANSIBLE_VERSION=1.4.4
+  - ANSIBLE_VERSION=1.4.3
+  - ANSIBLE_VERSION=1.4.2
+  - ANSIBLE_VERSION=1.4.1
+  - ANSIBLE_VERSION=1.4
+
+branches:
+  only:
+    - master
+
+before_install:
+  - sudo apt-get update -qq
+
+  # Generate ssh key
+  - ssh-keygen -t rsa -b 2048 -C '' -P '' -f files/id_rsa -q
+
+install:
+  # Install Ansible.
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
+
+script:
+  # Check the role/playbook's syntax.
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+
+  # Run the role/playbook with ansible-playbook.
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo -vvvv
+
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  - >
+    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+notifications:
+  email: false
+  hipchat:
+    rooms:
+      secure: kaN3e/t4ogUuSc9B6V1e04RugvTMMaP1IoJEZwJCJ1YfAFClwBHLHgv9o6q2TsDwfiPOC2KYNJ0Nv1I3v/jPuesvNIqjdip3vnyy/W94DE4yBc/aPMSMrrAxd7ucR+08btkC3K/fXV3kgbTV6oY9QPSuC1Ft2tWWYeKK8OXfNSssEzvBJ2mO0LyYK5/L8tXgbxAeNZOEjlCQIR2uejohY5jjL0IbhVNvx1zO/2gkjPoSoWWQM9ooF3ctpq4gtFQy5IxMoLoQbvmd7RngczQsyOLz9X1O6K/yn/mR9hmn16wb10u/8kAGEwPIfVMF0yuSXYNbG2FC0UgFQ3oJM6kskZM3vxvKg3b0GVZ5I6BMVqjFBs7aTmaagcX3700bZbR3EAy9xq9jFQPsmmrwMrigsKrmr9o6LTOeLW85B31GtSfq/GSSUPNWaNh+at7YsGZMolRCVKknSP30eU4rvIbDCJ/V7b4/NRwHgt3fW/SDX0S0vLznPD/SfYCR3xCUDLwDFBMXhNKeNHDzM0JNklOS+qzVajlb2HD07B4UbGAbwya2wYnMbMd+49nxP+idBVdt1uz6sXTcZ+JspOrhL6BCkmmNDKHYajxWyqArhaRWg+kcMc6FG18XDXMWiZjhttK13mpIXGRPEAmQN//O6hpv+KmOLzFCTI3Fv8GC9HQ5CFA=
