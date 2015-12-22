@@ -19,6 +19,14 @@ None
 * `nagios_client_authorized_keys.{n}.src`: [required]: The local path of the key
 * `nagios_client_authorized_keys.{n}.state`: [optional, default: `present`]: State
 
+* `nagios_client_script_map` [default: `{}`]: Script declarations
+* `nagios_client_script_map.key`: [required]: The identifier of the file (e.g. `check_raid`)
+* `nagios_client_script_map.key.src`: [required]: The local path of the file to copy, can be absolute or relative (e.g. `../../../files/nagios-client/usr/lib/nagios/plugins/check_raid`)
+* `nagios_client_script_map.key.dest`: [required]: The remote path of the file to copy (e.g. `/usr/lib/nagios/plugins/check_raid`)
+* `nagios_client_script_map.key.owner`: [optional, default `root`]: The name of the user that should own the file
+* `nagios_client_script_map.key.group`: [optional, default `root`]:The name of the group that should own the file
+* `nagios_client_script_map.key.mode`: [optional, default `0755`]: The mode of the file
+
 ## Dependencies
 
 None
