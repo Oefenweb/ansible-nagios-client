@@ -53,3 +53,16 @@
     - configuration
     - nagios-client
     - nagios-client-authorized-keys
+
+- name: copy script files
+  copy:
+    src: "{{ item.value.src }}"
+    dest: "{{ item.value.dest }}"
+    owner: "{{ item.value.owner | default('root') }}"
+    group: "{{ item.value.group | default('root') }}"
+    mode: "{{ item.value.mode | default('0755') }}"
+  with_dict: nagios_client_script_map
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-scripts
