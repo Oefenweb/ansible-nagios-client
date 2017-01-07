@@ -3,10 +3,10 @@
 - name: install dependencies
   apt:
     name: "{{ item }}"
-    state: latest
+    state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
-  with_items: nagios_client_dependencies
+  with_items: "{{ nagios_client_dependencies }}"
   tags:
     - configuration
     - nagios-client
@@ -15,8 +15,8 @@
 - name: install additional
   apt:
     name: "{{ item }}"
-    state: latest
-  with_items: nagios_client_install
+    state: "{{ apt_install_state | default('latest') }}"
+  with_items: "{{ nagios_client_install }}"
   tags:
     - configuration
     - nagios-client
@@ -26,8 +26,8 @@
   group:
     name: "{{ item }}"
   with_flattened:
-    - nagios_client_group
-    - nagios_client_groups
+    - "{{ nagios_client_group }}"
+    - "{{ nagios_client_groups }}"
   tags:
     - configuration
     - nagios-client
@@ -48,7 +48,7 @@
     user: "{{ nagios_client_user }}"
     key: "{{ lookup('file', item.src) }}"
     state: "{{ item.state | default('present') }}"
-  with_items: nagios_client_authorized_keys
+  with_items: "{{ nagios_client_authorized_keys }}"
   tags:
     - configuration
     - nagios-client
@@ -61,7 +61,7 @@
     owner: "{{ item.value.owner | default('root') }}"
     group: "{{ item.value.group | default('root') }}"
     mode: "{{ item.value.mode | default('0755') }}"
-  with_dict: nagios_client_script_map
+  with_dict: "{{ nagios_client_script_map }}"
   tags:
     - configuration
     - nagios-client
