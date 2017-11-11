@@ -25,6 +25,7 @@
 - name: add group
   group:
     name: "{{ item }}"
+    system: true
   with_flattened:
     - "{{ nagios_client_group }}"
     - "{{ nagios_client_groups }}"
@@ -36,6 +37,7 @@
 - name: add user
   user:
     name: "{{ nagios_client_user }}"
+    system: true
     group: "{{ nagios_client_group }}"
     groups: "{{ nagios_client_groups | join(',') }}"
   tags:
