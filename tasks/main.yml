@@ -1,12 +1,22 @@
 # tasks file for nagios-client
 ---
+- name: include variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "_{{ ansible_distribution_release }}.yml"
+    - "_{{ ansible_distribution | lower }}.yml"
+    - _default.yml
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-include-variables
+
 - name: install dependencies
   apt:
-    name: "{{ item }}"
+    name: "{{ nagios_client_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
-  with_items: "{{ nagios_client_dependencies }}"
   tags:
     - configuration
     - nagios-client
@@ -14,9 +24,8 @@
 
 - name: install additional
   apt:
-    name: "{{ item }}"
+    name: "{{ nagios_client_install }}"
     state: "{{ apt_install_state | default('latest') }}"
-  with_items: "{{ nagios_client_install }}"
   tags:
     - configuration
     - nagios-client
