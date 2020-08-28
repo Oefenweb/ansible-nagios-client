@@ -1,6 +1,7 @@
 ## nagios-client
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-nagios-client.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-nagios-client) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nagios--client-blue.svg)](https://galaxy.ansible.com/Oefenweb/nagios-client)
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-nagios-client.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-nagios-client)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nagios--client-blue.svg)](https://galaxy.ansible.com/Oefenweb/nagios-client)
 
 Set up a machine (client) so it can be monitored by nagios (server).
 
