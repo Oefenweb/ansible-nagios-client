@@ -1,4 +1,4 @@
-# vars file for nagios-client
+# vars file
 ---
 nagios_client_dependencies:
   - nagios-plugins

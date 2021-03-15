@@ -1,4 +1,4 @@
-# defaults file for nagios-client
+# defaults file
 ---
 nagios_client_install: []
 
