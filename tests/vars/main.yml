@@ -1,0 +1,6 @@
+# vars file
+---
+nagios_client_authorized_keys:
+  - src: "{{ nagios_client_private_key_file }}.pub"
+
+nagios_client_private_key_file: "{{ playbook_dir }}/../files/id_rsa"
