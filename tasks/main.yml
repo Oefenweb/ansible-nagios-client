@@ -72,8 +72,25 @@
     owner: "{{ item.value.owner | default('root') }}"
     group: "{{ item.value.group | default('root') }}"
     mode: "{{ item.value.mode | default('0755') }}"
+  when: (item.value.src | splitext)[-1] != '.j2'
   with_dict: "{{ nagios_client_script_map }}"
   tags:
     - configuration
     - nagios-client
     - nagios-client-scripts
+    - nagios-client-scripts-copy
+
+- name: template script files
+  template:
+    src: "{{ item.value.src }}"
+    dest: "{{ item.value.dest }}"
+    owner: "{{ item.value.owner | default('root') }}"
+    group: "{{ item.value.group | default('root') }}"
+    mode: "{{ item.value.mode | default('0755') }}"
+  when: (item.value.src | splitext)[-1] == '.j2'
+  with_dict: "{{ nagios_client_script_map }}"
+  tags:
+    - configuration
+    - nagios-client
+    - nagios-client-scripts
+    - nagios-client-scripts-template
