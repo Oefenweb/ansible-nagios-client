@@ -1,6 +1,6 @@
 # pre test file
 ---
-- name: pre | install dependencies
+- name: install dependencies
   apt:
     name:
       - openssh-client
@@ -8,7 +8,7 @@
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
 
-- name: pre | generate key pair
+- name: generate key pair
   command: >
     ssh-keygen -t rsa -b 2048 -C '' -P '' -f {{ nagios_client_private_key_file }} -q
   args:
