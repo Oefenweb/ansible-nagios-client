@@ -35,9 +35,7 @@
   ansible.builtin.group:
     name: "{{ item }}"
     system: true
-  with_flattened:
-    - "{{ nagios_client_group }}"
-    - "{{ nagios_client_groups }}"
+  with_items: "{{ [nagios_client_group] + nagios_client_groups }}"
   tags:
     - configuration
     - nagios-client
