@@ -38,7 +38,7 @@ None
 ---
 - hosts: all
   roles:
-    - nagios-client
+    - oefenweb.nagios-client
   vars:
     nagios_client_authorized_keys:
       - src: ../../../files/nagios-client/etc/nagios/id_rsa.pub
