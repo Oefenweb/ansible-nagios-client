@@ -12,7 +12,7 @@ None
 #### Variables
 
 * `nagios_client_install`  [default: `[]`]: Packages to install (e.g. `percona-nagios-plugins`)
-* `nagios_client_user`: [default: `nagios`]: The user that the nagios server will use to login
+* `nagios_client_user`: [default: `nagios`]: The user that the nagios server will use to log in
 * `nagios_client_group`: [default: `nagios`]: The primary group of the nagios user
 * `nagios_client_groups`: [default: `[]`]: The secondary groups of the nagios user
 
